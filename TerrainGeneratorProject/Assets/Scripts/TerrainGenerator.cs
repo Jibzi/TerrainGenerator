@@ -8,12 +8,20 @@ using UnityEngine.UI;
 public class TerrainGenerator : MonoBehaviour
 {
 
-    [SerializeField, Range(1, 200)] public int mapWidth = 10;
-    [SerializeField, Range(1, 200)] public int mapHeight = 10;
-    [SerializeField, Range(0.001f, 30f)] public float noiseScale = 1f;
+    [SerializeField, Range(1, 300)] public int mapWidth = 10;
+    [SerializeField, Range(1, 300)] public int mapHeight = 10;
+    
+    [SerializeField, Range(0.01f, 60f)] public float noiseScale = 1f;
+    private float Rate_noiseScale = 4f;
+    
     [SerializeField, Range(0.001f, 100f)] public float noiseStrength = 1f;
+    private float Rate_noiseStrength = 4f;
+    
     [SerializeField, Range(1, 10)] public int octaves = 1;
+    private int Rate_octaves = 1;
+    
     [SerializeField, Range(1, 16)] public float lacunarity = 2f;
+    private float Rate_lacunarity = 0.5f;
 
     private MeshFilter _meshFilter;
     private float[,] noiseMap;
@@ -33,8 +41,72 @@ public class TerrainGenerator : MonoBehaviour
         MeshData meshData = MeshGenerator.GenerateMesh(noiseMap, noiseStrength);
         _meshFilter.sharedMesh = meshData.CreateMesh();
         
-        Debug.Log("New mesh generated.");
-        Debug.Log("Vertex count: " + _meshFilter.sharedMesh.vertexCount);
-        Debug.Log("Triangle array length: " + _meshFilter.sharedMesh.triangles.Length);
+    }
+
+    public void Update()
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                noiseScale -= Rate_noiseScale * Time.deltaTime;
+                RefreshMap();
+                return;
+            }
+            else
+            {
+                noiseScale += Rate_noiseScale * Time.deltaTime;
+                RefreshMap();
+                return;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.T))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                noiseStrength -= Rate_noiseStrength * Time.deltaTime;
+                RefreshMap();
+                return;
+            }
+            else
+            {
+                noiseStrength += Rate_noiseStrength * Time.deltaTime;
+                RefreshMap();
+                return;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.L))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                lacunarity -= Rate_lacunarity * Time.deltaTime;
+                RefreshMap();
+                return;
+            }
+            else
+            {
+                lacunarity += Rate_lacunarity * Time.deltaTime;
+                RefreshMap();
+                return;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                octaves -= Rate_octaves;
+                RefreshMap();
+                return;
+            }
+            else
+            {
+                octaves += Rate_octaves;
+                RefreshMap();
+                return;
+            }
+        }
     }
 }
