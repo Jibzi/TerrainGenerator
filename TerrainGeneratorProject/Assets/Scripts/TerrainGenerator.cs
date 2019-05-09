@@ -23,20 +23,22 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField, Range(1, 16)] public float lacunarity = 2f;
     private float Rate_lacunarity = 0.5f;
 
+    [SerializeField, Range(-5f, 5f)] public float minLevel = 0f;
+
     private MeshFilter _meshFilter;
     private float[,] noiseMap;
 
     void Start()
     {
         
-        noiseMap = NoiseMap.GenerateNoiseMap(2, 2, 1, 1, 1);
+        noiseMap = NoiseMap.GenerateNoiseMap(2, 2, 1, 1, 1, 0f);
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         RefreshMap();
     }
 
     public void RefreshMap()
     {
-        noiseMap = NoiseMap.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, octaves, lacunarity);
+        noiseMap = NoiseMap.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, octaves, lacunarity, minLevel);
             
         MeshData meshData = MeshGenerator.GenerateMesh(noiseMap, noiseStrength);
         _meshFilter.sharedMesh = meshData.CreateMesh();
