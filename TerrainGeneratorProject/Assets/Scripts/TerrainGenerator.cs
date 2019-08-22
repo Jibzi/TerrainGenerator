@@ -42,6 +42,14 @@ public class TerrainGenerator : MonoBehaviour
         RefreshMap();
     }
 
+    public void OnValidate()
+    {
+        if (_meshFilter == null)
+        {
+            _meshFilter = gameObject.GetComponent<MeshFilter>();
+        }
+    }
+
     public void RefreshMap()
     {
         noiseMap = NoiseMap.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, octaves, lacunarity, minLevel);

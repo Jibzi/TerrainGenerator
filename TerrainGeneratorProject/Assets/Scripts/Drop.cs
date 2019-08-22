@@ -13,7 +13,6 @@ public class Drop
 
     private Vector2Int _pos = new Vector2Int(0,0);
     private Vector2 _dir = new Vector2(0, 0);
-    private float _vel = 0f;
     private float _water = 0f;
     private float _sediment = 0f;
     private float currentMaxSed;

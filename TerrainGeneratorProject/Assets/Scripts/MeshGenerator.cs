@@ -10,9 +10,7 @@ public static class MeshGenerator
     public static MeshData GenerateMesh(float[,] heightMap, float amplitudeScale)
     {
         int width = heightMap.GetLength(0);
-        Debug.Log("Width: " + width);
         int height = heightMap.GetLength(1);
-        Debug.Log("Height: " + height);
         float topLeftX = (width - 1) / -2f;
         float topLeftZ = (height - 1) / 2f;
 

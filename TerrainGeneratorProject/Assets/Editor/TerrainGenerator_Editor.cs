@@ -27,6 +27,7 @@ public class TerrainGenerator_Editor : Editor
             TerGen.noiseStrength = EditorGUILayout.Slider("Noise Strength:", TerGen.noiseStrength, 0.001f, 100f);
             TerGen.octaves = EditorGUILayout.IntSlider("Octaves:", TerGen.octaves, 1, 10);
             TerGen.lacunarity = EditorGUILayout.Slider("Lacunarity:", TerGen.lacunarity, 1f, 16f);
+            TerGen.minLevel = EditorGUILayout.Slider("Min Level:", TerGen.minLevel, -5f, 5f);
             //If any sliders were changed, tell the map to refresh.
             if (EditorGUI.EndChangeCheck())
             {
