@@ -20,5 +20,10 @@ public class TerrainGenerator_Editor : Editor
         {
             TerGen.RefreshMap();
         }
+
+        if (GUILayout.Button("Simulate Erosion"))
+        {
+            TerGen.BeginSim();
+        }
     }
 }

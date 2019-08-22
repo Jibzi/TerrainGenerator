@@ -25,8 +25,14 @@ public class TerrainGenerator : MonoBehaviour
 
     [SerializeField, Range(-5f, 5f)] public float minLevel = 0f;
 
+    [SerializeField] public int erosionIterations = 1000;
+    [SerializeField] public DropData erosionSettings;
+
     private MeshFilter _meshFilter;
+    private MeshData _meshData;
     private float[,] noiseMap;
+
+    private DropManager _dropManager;
 
     void Start()
     {
@@ -40,9 +46,56 @@ public class TerrainGenerator : MonoBehaviour
     {
         noiseMap = NoiseMap.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, octaves, lacunarity, minLevel);
             
-        MeshData meshData = MeshGenerator.GenerateMesh(noiseMap, noiseStrength);
-        _meshFilter.sharedMesh = meshData.CreateMesh();
+        _meshData = MeshGenerator.GenerateMesh(noiseMap, noiseStrength);
+        _meshFilter.sharedMesh = _meshData.CreateMesh();
         
+    }
+
+    public void RefreshGeometry()
+    {
+        _meshData = MeshGenerator.GenerateMesh(noiseMap, noiseStrength);
+        _meshFilter.sharedMesh = _meshData.CreateMesh();
+    }
+
+    //Returns the value of a given coordinate. Returns a negative value if there is currently no noiseMap generated.
+    public float SampleCurrentMap(int x, int y)
+    {
+        if (noiseMap != null)
+        {
+            if (x > -1 && x < mapWidth && (y > -1 && y < mapHeight))
+            {
+                return noiseMap[x, y];
+            }
+        }
+
+        return -1f;
+    }
+
+    public int GetMapWidth()
+    {
+        return mapWidth;
+    }
+
+    public int GetMapHeight()
+    {
+        return mapHeight;
+    }
+
+    public void AlterHeightAtIndex(int x, int y, float val)
+    {
+        if (noiseMap != null)
+        {
+            if (x > -1 && x < mapWidth && (y > -1 && y < mapHeight))
+            {
+                noiseMap[x, y] += val;
+            }
+        }
+    }
+
+    public void BeginSim()
+    {
+        _dropManager = new DropManager(this, erosionSettings);
+        _dropManager.BeginSim(erosionIterations);
     }
 
     public void Update()
